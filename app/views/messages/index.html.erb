@@ -1,0 +1,10 @@
+<h1>All Messages:</h1>
+
+<% @messages.each do |message| %>
+	<div class="form-group">
+		<p> <b><%= message.ip %></b>  : <%= message.content %>	</p>
+	</div>
+	
+<% end %>
+
+<%= render 'new' %>
