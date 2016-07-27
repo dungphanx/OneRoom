@@ -1,7 +1,6 @@
 class MessagesController < ApplicationController
 	def index
-		@messages = Message.all
-		@message = Message.new
+		
 	end
 
 	def new
@@ -11,15 +10,18 @@ class MessagesController < ApplicationController
 	def create
 		@message = Message.new message_params
 		@message.ip = request.remote_ip
-		if @message.save
-			redirect_to root_path
-		else
-			redirect_to root_path, flash[:error] = "#{@message.errors.full_messages.to_sentence}"
-		end
+		@message.save!
+		# let's broadcast message html to all the clients
+		ActionCable.server.broadcast 'messages', message: render_message(@message)
+		head :ok
 	end
 
 	private
 	def message_params
 		params.require(:message).permit(:ip, :content)
+	end
+
+	def render_message(message)
+		"<div class=\"form-group\">\n\t<p> <b>#{message.ip}</b>  : #{message.content}</p>\n</div>\n"
 	end
 end
