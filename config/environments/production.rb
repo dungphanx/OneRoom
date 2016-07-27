@@ -83,4 +83,8 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  config.action_cable.allowed_request_origins = [
+  'https://thawing-woodland-83108.herokuapp.com', 
+  'https://thawing-woodland-83108.herokuapp.com'
+]
 end
